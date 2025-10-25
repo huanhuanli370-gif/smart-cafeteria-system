@@ -1,11 +1,13 @@
 
-# 🧠 Smart Cafeteria System
+# 333 - Smart Cafeteria System
 
-Huanhuan Li & 25000360 & Team Leader & 3459731470@qq.com
-Xiaoyu Li & 24006086 & Frontend & Lxy050904@qq.com
-Bingqi Yao & 24005067 & Backend & 2784323362@qq.com
-Xin Zhang & 25021747 & Backend & 2665004983@qq.com
-Zihao Li & 24005065 & Frontend & 3082732552@qq.com
+## Member information
+
+- Huanhuan Li & 25000360 & Team Leader & 3459731470@qq.com
+- Xiaoyu Li & 24006086 & Frontend & Lxy050904@qq.com
+- Bingqi Yao & 24005067 & Backend & 2784323362@qq.com
+- Xin Zhang & 25021747 & Backend & 2665004983@qq.com
+- Zihao Li & 24005065 & Frontend & 3082732552@qq.com
 
 A **Full-Stack Smart Cafeteria System** that provides a seamless digital dining experience for students, faculty, and cafeteria staff. 
 It includes real-time order management, menu browsing, admin menu editing, AI chatbot assistance, and role-based access control.
