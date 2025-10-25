@@ -1,50 +1,293 @@
-### **核心功能新增与重构**
 
-1.  **订单实时通知系统**
-    * **功能**: 当后厨人员查看新订单时，下单用户会收到一个“厨房已接单”的推送通知。
-    * **实现**: 通过集成 `Socket.IO` 实现。后端在 `GET /api/orders/:id` 接口中触发 `order_read` 事件；前端在 `AuthContext.js` 中监听此事件并使用 `expo-notifications` 创建本地推送。
+# 🧠 Smart Cafeteria System
 
-2.  **动态折扣系统**
-    * **功能**: 为特定角色的用户提供订单折扣。
-    * **实现**: 我们首先实现了“教师八折”，之后根据您的要求修改为“**学生八折**”。这包括修改后端下单接口 (`POST /api/orders`) 来安全地计算和存储价格，并更新了前端所有相关页面 (`OrderPage`, `OrderStatusPage`, `KitchenPage` 等) 以正确显示最终价格。
+Huanhuan Li & 25000360 & Team Leader & 3459731470@qq.com
+Xiaoyu Li & 24006086 & Frontend & Lxy050904@qq.com
+Bingqi Yao & 24005067 & Backend & 2784323362@qq.com
+Xin Zhang & 25021747 & Backend & 2665004983@qq.com
+Zihao Li & 24005065 & Frontend & 3082732552@qq.com
 
-3.  **AI 智能助手**
-    * **功能**: 在App中增加了一个“AI助手”标签页，提供一个可以真实交互的聊天机器人。
-    * **实现**: 创建了全新的 `AIScreen.js` 聊天界面，并在后端添加了 `/api/ai/chat` 接口，该接口安全地调用 **Gemini API** 来生成智能回复。我还指导您完成了获取和配置 Gemini API Key 的全过程。
+A **Full-Stack Smart Cafeteria System** that provides a seamless digital dining experience for students, faculty, and cafeteria staff. 
+It includes real-time order management, menu browsing, admin menu editing, AI chatbot assistance, and role-based access control.
 
-4.  **高级菜品推荐系统**
-    * **功能**: 在点餐页顶部增加了三个智能推荐模块：“为您推荐”、“正在流行”、“再次下单”。
-    * **实现**: 后端在 `menus.js` 中新增了三个API接口来提供数据；前端在 `OrderPage.js` 中获取并以横向滚动列表的形式展示这些推荐，同时解决了数据加载时的各种时序问题和后端错误。
+---
 
-5.  **管理员数据统计仪表盘**
-    * **功能**: 为管理员在“设置”页面增加了一个“统计”入口，进入后可以看到包含总收入、总订单数、最畅销菜品和每日收入图表的仪表盘。
-    * **实现**: 后端新增了 `/api/statistics/summary` 接口来聚合所有统计数据；前端创建了 `StatisticsPage.js` 并使用 `react-native-chart-kit` 库将数据可视化。
+## 📋 1. Project Overview
 
-6.  **菜单管理页面重构**
-    * **功能**: 将原来布满输入框的菜单编辑页，重构为一个更清晰、更专业的“**只读 vs. 编辑**”模式。
-    * **实现**: 将页面组件化，创建了 `MenuItemEditor.js` 和 `AddNewItemForm.js`，并使用 `FlatList` 提升了长列表的性能和用户体验。
+**Project Name:** Smart Cafeteria System 
+**Goal:** Digitize the cafeteria workflow with real-time order tracking, secure authentication, and intelligent user assistance.
 
-7.  **用户注册功能**
-    * **功能**: 实现了完整的用户注册流程。
-    * **实现**: 后端在 `auth.js` 中新增了 `/api/auth/register` 接口；前端创建了 `RegisterScreen.js` 注册页面，并将其整合到了登录导航流程中。
+This project delivers a **complete end-to-end solution**:
+- Customers can browse menus, add items to a cart, and place orders.
+- Kitchen staff receive and complete orders.
+- Admins can manage menus and system data.
+- Faculty members automatically receive discounts.
+- **AI Assistant powered by Gemini** helps users with interactive, context-aware conversations.
 
-8.  **独立的订单详情与历史页面**
-    * **功能**: 创建了独立的、可复用的 `OrderDetailPage.js` 和 `OrderHistoryPage.js`。
-    * **实现**: 用户可以从多个入口（“订单状态”标签页、“设置”中的历史订单）进入并查看任何一个订单的详细信息，同时为管理员提供了查看所有人订单历史的权限。
+---
 
-### **UI/UX 优化与调整**
+## ⚙️ 2. Tech Stack
 
-* **统一滚动体验**: 重构了 `OrderPage.js` 的布局，将推荐模块和菜单列表整合进同一个 `SectionList`，实现了固定搜索栏、下方内容统一滚动的流畅效果。
-* **消除顶部空白**: 在多个页面 (`OrderPage`, `OrderStatusPage`, `StatisticsPage` 等) 解决了因“双重安全区域”导致的顶部额外空白问题。
-* **推荐搜索标签**: 在 `OrderPage` 的搜索栏下方，增加了带图标的、可点击的推荐搜索关键词标签。
-* **图表优化**: 解决了 `StatisticsPage` 中图表因手机屏幕宽度不足而显示拥挤的问题，将其改为可横向滚动，并优化了日期标签的格式。
+### **Frontend (Mobile App)**
+- **React Native (Expo)**
+- **React Navigation**
+- **Axios**
+- **Ionicons (via @expo/vector-icons)**
+- **AsyncStorage / SecureStore** for token persistence
+- **Gemini API (Google Generative AI)** for intelligent chatbot responses
 
-### **数据与调试**
+### **Backend**
+- **Node.js + Express.js**
+- **MySQL (mysql2/promise)**
+- **Socket.IO** for real-time order notifications
+- **JWT (jsonwebtoken)** for authentication
+- **bcryptjs** for password hashing
+- **dotenv** for environment configuration
 
-* **大规模数据填充**: 对 `dataSeed.js` 文件进行了多次大规模扩充，新增了大量用户、包含多种国际美食的丰富菜单，以及分布在过去7天内、每天超过10个的海量订单数据，让测试环境极其逼真。
-* **问题修复**: 我们一起解决了多种类型的程序错误，包括：
-    * **前端**: 导航错误 (`Maps not handled`)、组件重复声明、图标名称无效。
-    * **后端**: 数据库查询错误 (`ER_WRONG_FIELD_WITH_GROUP`, `ER_INVALID_JSON_TEXT_IN_PARAM`)、数据关联错误（种子数据中订单商品缺少`id`）。
-    * **环境与依赖**: 在新电脑上因 `node_modules` 问题导致的编译失败，并通过清理和重装依赖解决了问题。
+### **Database**
+- MySQL  
+  - Tables: `users`, `menus`, `orders`  
+  - Includes seeding and reset scripts for easy initialization
 
-总的来说，今天我们不仅为您的App增加了大量令人兴奋的新功能，还对现有功能进行了深度优化和重构，并修复了在此过程中遇到的各种技术问题。
+---
+
+## 🗂️ 3. Project Structure
+
+
+```
+
+project-root/
+├── backend/
+│   ├── index.js                # Server entry point
+│   ├── routes/
+│   │   ├── menus.js            # Menu CRUD + Search
+│   │   ├── orders.js           # Place order, complete order, list orders
+│   │   └── auth.js             # Login, user profile, JWT auth
+│   ├── middlewares/
+│   │   └── auth.js             # Role-based access control middleware
+│   └── db/
+│       ├── db.js               # MySQL connection pool
+│       ├── resetDB.js          # Recreate all tables
+│       └── dataSeed.js         # Insert demo users, menus, orders
+│
+└── frontend/
+├── App.js                  # Root component & AuthProvider
+├── context/
+│   └── AuthContext.js      # JWT storage, login/logout, user state
+├── lib/
+│   └── api.js              # Axios instance with token interceptor
+├── navigation/
+│   ├── AppNavigator.js     # Dynamic navigation based on user role
+│   ├── OrderStack.js
+│   ├── KitchenStack.js
+│   ├── SettingStack.js
+│   ├── AIStack.js
+│   └── AuthStack.js
+├── screens/
+│   ├── LoginScreen.js
+│   ├── OrderPage.js
+│   ├── KitchenPage.js
+│   ├── SettingPage.js
+│   ├── OrderStatusPage.js
+│   ├── OrderHistoryPage.js
+│   ├── OrderDetailPage.js
+│   ├── ProfileDetail.js
+│   ├── MenuEditorPage.js
+│   └── AIScreen.js         # Gemini-powered AI Chat Assistant
+└── components/
+└── SearchBar.js
+
+```
+---
+
+## 🚀 4. Setup Instructions
+
+### 🧩 Prerequisites
+- Node.js (v18+)
+- MySQL running locally
+- Expo CLI (`npm install -g expo-cli`)
+- npm or yarn
+
+---
+
+### 🖥️ Backend Setup
+
+```bash
+cd backend
+npm install
+
+```
+
+#### Configure Environment (.env)
+
+```
+PORT=3000
+DB_HOST=localhost
+DB_USER=cafeteria_user
+DB_PASS=cafeteria_pass
+DB_NAME=cafeteria
+JWT_SECRET=supersecret_change_me
+TOKEN_EXPIRES=7d
+RESET_DB=false   # Set true for initial schema + seed
+
+```
+
+#### Start the server
+
+```
+npm run dev
+# or
+node index.js
+
+```
+
+------
+
+### 📱 Frontend Setup
+
+```
+cd frontend
+npm install
+
+```
+
+#### Environment (.env)
+
+```
+API_BASE=http://<your-local-IP>:3000
+GEMINI_API_KEY=your_google_gemini_api_key
+
+```
+
+> ⚠️ Use your LAN IP for Expo real device testing.
+
+#### Run the app
+
+```
+npx expo start -c
+
+```
+
+------
+
+## 💡 5. Key Features
+
+### 👩‍🎓 Student / Faculty
+
+- Browse menus (real-time)
+- Add / remove items from cart
+- Faculty users receive 20% discount automatically
+- Place orders and track order status
+- View order history and details
+
+### 👨‍🍳 Kitchen Staff
+
+- View current (`preparing`) and completed (`done`) orders
+- Mark orders as completed (`PUT /api/orders/:id/complete`)
+- SectionList UI for grouped orders
+- Final price display for accurate billing
+
+### 👨‍💼 Admin
+
+- Manage menu items (create / edit / delete)
+- Inline editing with dirty-state tracking
+- Add new dishes with image, category, and stock
+- Real-time refresh after operations
+- Role-based API security
+
+### 🔔 Real-Time Notifications
+
+- WebSocket system (Socket.IO)
+- Users receive *“Kitchen has read your order”* notification
+- Kitchen page auto-updates on order completion
+
+### 🤖 AI Assistant (Gemini Integration)
+
+- Fully functional **AI Chat Assistant**
+- Built with **Google Gemini API**
+- Context-aware responses with current order or menu context
+- Located in a dedicated **AI Assistant tab** in the navigation bar
+- Can answer questions like:
+  - “What’s today’s most popular dish?”
+  - “Show me vegetarian options.”
+  - “How long will my order take?”
+  - “What’s in the Chicken Teriyaki Bowl?”
+
+------
+
+## 🧱 6. Database Schema (Simplified)
+
+| Table      | Columns                                  |
+| ---------- | ---------------------------------------- |
+| **users**  | id, name, email, password (hashed), role |
+| **menus**  | id, name, description, price, image, category, stock, is_available |
+| **orders** | id, items (JSON), status, customer_id, customer_name, original_price, discount, final_price, is_viewed, created_at |
+
+------
+
+## 🔐 7. Authentication & Roles
+
+| Role              | Access                                   |
+| ----------------- | ---------------------------------------- |
+| Student / Faculty | Browse menus, place orders, view history |
+| Staff             | View / complete orders                   |
+| Admin             | Manage menus, users, and orders          |
+| Guest             | Read-only menus                          |
+
+**JWT-based authentication**
+Frontend stores tokens securely and attaches them to all Axios requests.
+401 responses trigger logout and redirect to the login page.
+
+------
+
+## 🌐 8. API Endpoints
+
+| Method | Endpoint                   | Description           | Auth        |
+| ------ | -------------------------- | --------------------- | ----------- |
+| GET    | `/api/health`              | Health check          | Public      |
+| POST   | `/api/auth/login`          | Login & get JWT       | Public      |
+| GET    | `/api/auth/me`             | Get current user info | ✅           |
+| GET    | `/api/menus?q=keyword`     | Get or search menu    | Public      |
+| POST   | `/api/menus`               | Add new menu item     | Admin       |
+| PUT    | `/api/menus/:id`           | Edit menu item        | Admin       |
+| DELETE | `/api/menus/:id`           | Delete menu item      | Admin       |
+| GET    | `/api/orders`              | Get all orders        | Staff/Admin |
+| POST   | `/api/orders`              | Submit new order      | Auth        |
+| PUT    | `/api/orders/:id/complete` | Mark as completed     | Staff/Admin |
+
+------
+
+## 🧰 9. Development Notes
+
+- **AI Integration:** Uses Gemini REST API for conversational context.
+- **API Client (lib/api.js)** handles JWT token injection & global error handling.
+- **AuthContext** manages login persistence and user role switching.
+- **RESET_DB** enables one-click schema rebuild for testing.
+- **UI:** iOS-style design with tabs, cards, and animations.
+
+------
+
+## 🧭 10. Troubleshooting
+
+### ❌ MySQL Access Denied
+
+```
+CREATE USER 'cafeteria_user'@'localhost' IDENTIFIED BY 'cafeteria_pass';
+GRANT ALL PRIVILEGES ON cafeteria.* TO 'cafeteria_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### ⚠️ Expo Metro Cache Issues
+
+```
+npx expo start -c
+```
+
+### ⚙️ Reinstall Node Modules (Windows)
+
+```
+Remove-Item -Recurse -Force node_modules
+Remove-Item -Force package-lock.json
+npm install
+npx expo start -c
+```
